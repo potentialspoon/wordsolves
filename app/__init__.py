@@ -49,14 +49,19 @@ def searchTrie(node, available, prefix, res):
             searchTrie(child, available, prefix + char, res)
             available[char] += 1
 
-heads = Counter(testStr)
-wordTrie = makeTrie(wordBank)
-possibleWords = []
+def findWords(letters,threeAllowed):
+    heads = Counter(letters)
+    wordTrie = makeTrie(wordBank)
+    possibleWords = []
 
-for letter in sorted(set(testStr)):
-    if letter in wordTrie.root.children:
-        heads[letter] -= 1
-        searchTrie(wordTrie.root.children[letter], heads, letter, possibleWords)
-        heads[letter] += 1
+    for letter in sorted(set(letters)):
+        if letter in wordTrie.root.children:
+            heads[letter] -= 1
+            searchTrie(wordTrie.root.children[letter], heads, letter, possibleWords)
+            heads[letter] += 1
 
-print(possibleWords)
+    possibleWords = sorted(possibleWords, key = len)
+    
+    return possibleWords
+
+print(findWords(testStr, True))
